@@ -21,7 +21,7 @@ https://github.com/marketplace/actions/send-log-to-loki
 このアクションの特徴としては以下の通りです。
 
 - GitHub Actions の実行情報 (開始時間と終了時間など) を Loki に送信する。
-- ログのラベルに GitHub Actions の実行 URL が含まれる。
+- ログのラベルに 対象の GitHub Actions の URL が含まれる。
 - ログにカスタムメッセージとラベルを含められる。
 
 # 使用方法
@@ -60,6 +60,22 @@ https://github.com/marketplace/actions/send-log-to-loki
 Loki インスタンスが HTTP 経由でログを受信するように設定されていることを確認してください。Loki サーバーのセットアップに関するガイダンスについては、[Loki のドキュメント](https://grafana.com/docs/loki/latest/setup/)を参照してください。
 
 # Loki にどのようにログが送信されるか
+
+## ログに含まれるラベル
+
+- `actor`: 実行者
+- `branch`: ブランチ名
+- `duration`: 実行時間（`measurement` パラメータに「start」と「finish」を指定したものそれぞれが実行された場合に記録される）
+- `measurement`: アクション実行時に指定された `measurement` パラメータの値
+- `repositoryName`: リポジトリ名
+- `repositoryOwner`: リポジトリ所有者
+- `runId`: 実行 ID
+- `runNumber`: 実行番号
+- `source`: `github-actions`という値が含まれる
+- `url`: URL
+- `workflow`: ワークフロー名
+
+その他のラベルは、`labels` パラメータで指定したものが含まれます。
 
 # まとめ
 
