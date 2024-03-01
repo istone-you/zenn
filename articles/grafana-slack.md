@@ -1,5 +1,5 @@
 ---
-title: "GrafanaのダッシュボードをSlackに通知するLambdaをTerraformとNode.jsで構築"
+title: "GrafanaのダッシュボードをSlackに投稿する（メールの画像を Slack に投稿する）"
 emoji: "📌"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["aws", "nodejs", "terraform", "grafana", "slack"]
