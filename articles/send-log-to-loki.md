@@ -6,8 +6,6 @@ topics: ["githubactions", "grafana", "devops"]
 published: false
 ---
 
-# はじめに
-
 GitHub Actions の実行タイミングや実行時間を可視化できたら便利だと思い、GitHub Actions のログを Grafana Loki に送信するアクションを作ってみました。
 
 こちらに公開しています。

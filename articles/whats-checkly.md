@@ -6,15 +6,13 @@ topics: ["aws", "githubactions", "terraform", "grafana", "devops"]
 published: false
 ---
 
-# はじめに
-
-今回は、外形監視と E2E テストができる Checkly というサービスについて紹介します。
-
-https://www.checklyhq.com/
+今回は、外形監視と E2E テストができる Checkly というサービスについて簡単に紹介します。
 
 # Checkly とは
 
 **Checkly**は外形監視と E2E テストが行える SaaS です。E2E テストには[**Playwright**](https://playwright.dev/)を使用します。
+
+https://www.checklyhq.com/
 
 Sentry や Vercel、1Password などの有名企業が利用しており、信頼性の高さが伺えます。
 
@@ -24,12 +22,12 @@ Datadog との比較はこちらのサイトをご覧ください。料金的な
 
 https://www.checklyhq.com/datadog-alternative/
 
-# 外形監視
+# 外形監視とは
 
 外形監視（合成監視とも呼ばれる）は、ウェブサイトやアプリケーションの性能を定期的にテストし、ユーザーの視点からサービスの可用性や応答時間を監視することです。
 これにより、ユーザーがサービスを使用する際に直面する可能性のある問題を事前に検出し、修正できます。
 
-# E2E テスト
+# E2E テストとは
 
 E2E テストは、アプリケーションやシステムの全体的なフローを通じて、実際のユーザーシナリオをシミュレートしてテストすることです。
 これにより、アプリケーションの品質を向上させ、ユーザーが期待どおりの機能を使用できることを保証できます。
@@ -39,11 +37,9 @@ E2E テストは、アプリケーションやシステムの全体的なフロ�
 外形監視と E2E テストは似てますが、外形監視は実稼働環境でアプリを継続的にテストすることを目的としており、E2E テストはデプロイ前にバグを検出することを目的としています。
 これまでは、品質保証 (QA) チームがテストを実行する一方、監視は運用 (Ops) の責任でしたが、DevOps の発展によりこれらの境界線が曖昧になっています。
 
-# 使用方法
+## 外形監視を試してみる
 
 ※ アカウント登録については割愛します。
-
-## 外形監視
 
 早速 Checkly にログインし、新しいチェックを作成します。
 サイドバーから+ボタンをクリックします。
@@ -55,9 +51,9 @@ E2E テストは、アプリケーションやシステムの全体的なフロ�
 Bolower check・API check・Multistep check の 3 種類のチェックが作成できるようです。
 まずは API check を作成してみます。
 
-![](https://storage.googleapis.com/zenn-user-upload/c130336d2972-20240301.png)
+![](https://storage.googleapis.com/zenn-user-upload/5c315c345eb8-20240301.png)
 
-CHECK NAME は「Test Check」とします。
+CHECK NAME は適当に「Test Check」とします。
 
 ![](https://storage.googleapis.com/zenn-user-upload/ae73eb1a9bc1-20240301.png)
 
@@ -114,7 +110,7 @@ CHECK NAME は「Test Check」とします。
 
 これで 5 分ごとに Zenn のトップページの外形監視が行われるようになりました。
 
-## E2E テスト
+## E2E テストを試してみる
 
 次は E2E テストを作成してみます。
 再度サイドバーから+ボタンをクリックします。
@@ -125,7 +121,45 @@ CHECK NAME は「Test Check」とします。
 
 Bolower check を選択します。
 
-![](https://storage.googleapis.com/zenn-user-upload/c130336d2972-20240301.png)
+![](https://storage.googleapis.com/zenn-user-upload/ffc3b4e7dc27-20240301.png)
+
+Check CLI が使用できたり、Playwright Test Generator が使用できるようですが、今回は「Start from scratch」から作成します。
+
+![](https://storage.googleapis.com/zenn-user-upload/2f197f77ba9f-20240301.png)
+
+CHECK NAME は適当に「Test Check #2」とします。
+
+![](https://storage.googleapis.com/zenn-user-upload/dddd43d628f5-20240301.png)
+
+「Setting」からテストの設定が行えるようです。
+
+![](https://storage.googleapis.com/zenn-user-upload/931fa9597772-20240301.png)
+
+テストのスケジュール設定やロケーションの設定はこちらから行えます。今回はデフォルトのままとします。
+
+![](https://storage.googleapis.com/zenn-user-upload/bce26d933d8a-20240301.png)
+
+デフォルトで Playwright のコードが用意されているので、これをそのまま実行してみましょう。
+「Run Script」をクリックします。
+
+![](https://storage.googleapis.com/zenn-user-upload/0c16dcda75f1-20240301.png)
+
+<!-- textlint-disable ja-technical-writing/ja-no-mixed-period -->
+
+しばらく待ちましょう 🍵
+
+<!-- textlint-enable -->
+
+<br>
+
+画面下部にある「RUN LOGS」を確認すると、Playwright のテストに pass していることが分かります。
+
+![](https://storage.googleapis.com/zenn-user-upload/652c97d3d798-20240301.png)
+
+また、コードエディタの左側には「TEST REPORT」が表示されており、テストの結果を確認できます。
+Video や Screenshot も確認できるので便利ですね。
+
+![](https://storage.googleapis.com/zenn-user-upload/4932277ceb10-20240301.png)
 
 # まとめ
 
