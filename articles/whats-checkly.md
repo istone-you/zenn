@@ -37,7 +37,7 @@ E2E テストは、アプリケーションやシステムの全体的なフロ�
 外形監視と E2E テストは似てますが、外形監視は実稼働環境でアプリを継続的にテストすることを目的としており、E2E テストはデプロイ前にバグを検出することを目的としています。
 これまでは、品質保証 (QA) チームがテストを実行する一方、監視は運用 (Ops) の責任でしたが、DevOps の発展によりこれらの境界線が曖昧になっています。
 
-## 外形監視を試してみる
+# 外形監視を試してみる
 
 ※ アカウント登録については割愛します。
 
@@ -110,7 +110,7 @@ CHECK NAME は適当に「Test Check」とします。
 
 これで 5 分ごとに Zenn のトップページの外形監視が行われるようになりました。
 
-## E2E テストを試してみる
+# E2E テストを試してみる
 
 次は E2E テストを作成してみます。
 再度サイドバーから+ボタンをクリックします。
@@ -139,8 +139,51 @@ CHECK NAME は適当に「Test Check #2」とします。
 
 ![](https://storage.googleapis.com/zenn-user-upload/bce26d933d8a-20240301.png)
 
-デフォルトで Playwright のコードが用意されているので、これをそのまま実行してみましょう。
+デフォルトで Playwright を使用した JavaScript のコードが用意されているので、これをそのまま実行してみましょう。
 「Run Script」をクリックします。
+
+<!-- textlint-disable ja-technical-writing/ja-no-mixed-period -->
+
+:::details デフォルトのコード
+
+<!-- textlint-enable -->
+
+Checkly の環境変数`ENVIRONMENT_URL`に設定した URL、もしくは Checkly の公式サイトにアクセスしてスクリーンショットを撮影し、レスポンスが 400 未満であることを確認するテストです。
+
+```js
+/**
+ * To learn more about Playwright Test visit:
+ * https://www.checklyhq.com/docs/browser-checks/playwright-test/
+ * https://playwright.dev/docs/writing-tests
+ */
+
+const { expect, test } = require("@playwright/test");
+
+// Set the action timeout to 10 seconds to quickly identify failing actions.
+// By default Playwright Test has no timeout for actions (e.g. clicking an element).
+// Learn more here: https://www.checklyhq.com/docs/browser-checks/timeouts/
+test.use({ actionTimeout: 10000 });
+
+test("visit page and take screenshot", async ({ page }) => {
+  // Change checklyhq.com to your site's URL,
+  // or, even better, define a ENVIRONMENT_URL environment variable
+  // to reuse it across your browser checks
+  const response = await page.goto(
+    process.env.ENVIRONMENT_URL || "https://checklyhq.com"
+  );
+
+  // Take a screenshot
+  await page.screenshot({ path: "screenshot.jpg" });
+
+  // Test that the response did not fail
+  expect(
+    response.status(),
+    "should respond with correct status code"
+  ).toBeLessThan(400);
+});
+```
+
+:::
 
 ![](https://storage.googleapis.com/zenn-user-upload/0c16dcda75f1-20240301.png)
 
@@ -157,7 +200,7 @@ CHECK NAME は適当に「Test Check #2」とします。
 ![](https://storage.googleapis.com/zenn-user-upload/652c97d3d798-20240301.png)
 
 また、コードエディタの左側には「TEST REPORT」が表示されており、テストの結果を確認できます。
-Video や Screenshot も確認できるので便利ですね。
+Videos や Screenshots も確認できるので便利ですね。
 
 ![](https://storage.googleapis.com/zenn-user-upload/4932277ceb10-20240301.png)
 
