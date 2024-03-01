@@ -41,6 +41,92 @@ E2E テストは、アプリケーションやシステムの全体的なフロ�
 
 # 使用方法
 
+※ アカウント登録については割愛します。
+
+## 外形監視
+
+早速 Checkly にログインし、新しいチェックを作成します。
+サイドバーから+ボタンをクリックします。
+
+![](https://storage.googleapis.com/zenn-user-upload/eb4e600c39f9-20240301.png)
+
+<br>
+
+Bolower check・API check・Multistep check の 3 種類のチェックが作成できるようです。
+まずは API check を作成してみます。
+
+![](https://storage.googleapis.com/zenn-user-upload/c130336d2972-20240301.png)
+
+CHECK NAME は「Test Check」とします。
+
+![](https://storage.googleapis.com/zenn-user-upload/ae73eb1a9bc1-20240301.png)
+
+<!-- textlint-disable ja-technical-writing/no-unmatched-pair -->
+
+テストとして Zenn のトップページ（https://zenn.dev）を指定します。
+
+<!-- textlint-enable -->
+
+![](https://storage.googleapis.com/zenn-user-upload/306d14b1a424-20240301.png)
+
+チェックの前にスクリプトが実行できるようです。また、レスポンス時間の制限も設定できるようです。
+今回はデフォルトのままとします。
+
+![](https://storage.googleapis.com/zenn-user-upload/7205ddd74a63-20240301.png)
+
+どのようなデータが返却されれば成功とするかを設定します。今回は以下の項目をチェックします。
+
+- **Status code**: 200 かどうかをチェック
+- **Response time**: 100ms 未満かどうかをチェック
+- **Header**: `Content-Type`が t`text/html; charset=utf-8`かどうかをチェック
+- **Text body**: `lang="ja"`が HTML 内に含まれているかどうかを正規表現でチェック
+
+![](https://storage.googleapis.com/zenn-user-upload/058eabf69999-20240301.png)
+
+<!-- textlint-disable ja-technical-writing/ja-no-mixed-period -->
+
+スケージュール戦略を設定します。今回はデフォルトの Prallel runs を選択し、
+
+<!-- textlint-enable -->
+
+![](https://storage.googleapis.com/zenn-user-upload/c69c1b0c2fcb-20240301.png)
+
+リージョンは東京と大阪を選択します。
+
+![](https://storage.googleapis.com/zenn-user-upload/15ea29569e6c-20240301.png)
+
+チェックの間隔を設定します。今回はデフォルト設定の 5 分間隔とします。
+
+![](https://storage.googleapis.com/zenn-user-upload/49af566e88ac-20240301.png)
+
+失敗した際のリトライの設定です。デフォルト設定の 1 分後と 2 分後にリトライするように設定します。
+
+![](https://storage.googleapis.com/zenn-user-upload/f931b273776f-20240301.png)
+
+最後にアラートの通知先の設定です。事前に Email や Slack などの通知先を設定しておくか、このチェックのみの通知先を設定できます。
+
+![](https://storage.googleapis.com/zenn-user-upload/a376b918dfa6-20240301.png)
+
+ここまで設定できたら「Run & Save」をクリックします。
+結果が表示されて、チェックが成功している事が分かります。
+
+![](https://storage.googleapis.com/zenn-user-upload/c75e40a65016-20240301.png)
+
+これで 5 分ごとに Zenn のトップページの外形監視が行われるようになりました。
+
+## E2E テスト
+
+次は E2E テストを作成してみます。
+再度サイドバーから+ボタンをクリックします。
+
+![](https://storage.googleapis.com/zenn-user-upload/eb4e600c39f9-20240301.png)
+
+<br>
+
+Bolower check を選択します。
+
+![](https://storage.googleapis.com/zenn-user-upload/c130336d2972-20240301.png)
+
 # まとめ
 
 今回は、外形監視と E2E テストができる Checkly について紹介しました。UI に優れていて使いやすいですし、料金的なメリットもあるので、ぜひ一度試してみてください。
