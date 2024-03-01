@@ -1,5 +1,5 @@
 ---
-title: "APIチェックとE2E テストができるCheckly とは？"
+title: "外形監視とE2E テストができるCheckly とは？"
 emoji: "🦝"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["aws", "githubactions", "terraform", "grafana", "devops"]
