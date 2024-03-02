@@ -19,6 +19,9 @@ export function convertFrontmatter(outputPath?: string) {
     dataCloned.tags = dataCloned.topics;
     delete dataCloned.topics;
 
+    // Add slide: false
+    dataCloned.slide = false;
+
     // Add new fields
     if (outputPath && existsSync(outputPath)) {
       const existingData = matter(readFileSync(outputPath, "utf8")).data;
@@ -32,7 +35,16 @@ export function convertFrontmatter(outputPath?: string) {
       dataCloned.organization_url_name = null;
     }
 
+    const updatedContent = content.replace(
+      /!\[\]\((.*?) =(\d+)x\)/g,
+      (match, src, width) => {
+        return `<img width="${width}" src="${src}">`;
+      }
+    );
+
+    console.log(updatedContent);
+
     const frontmatter = yaml.dump(dataCloned);
-    return `---\n${frontmatter}---\n${content}`;
+    return `---\n${frontmatter}---\n${updatedContent}`;
   };
 }
