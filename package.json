@@ -4,13 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "ztoq": "ts-node scripts/ztoq.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/git-url-parse": "^9.0.3",
+    "@types/js-yaml": "^4.0.9",
+    "@types/yargs": "^17.0.32",
+    "git-url-parse": "^14.0.0",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
     "textlint-filter-rule-comments": "^1.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "yargs": "^17.7.2",
     "zenn-cli": "^0.1.153"
   },
   "devDependencies": {
