@@ -3,7 +3,7 @@ title: "外形監視とE2E テストができるCheckly とは？"
 emoji: "🦝"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["aws", "githubactions", "terraform", "grafana", "devops"]
-published: false
+published: true
 ---
 
 今回は、外形監視と E2E テストができる Checkly というサービスについて簡単に紹介します。

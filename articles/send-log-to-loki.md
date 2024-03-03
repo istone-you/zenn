@@ -3,7 +3,7 @@ title: "GitHub Actions のログを Grafana Loki に送信するアクション�
 emoji: "🕹️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["githubactions", "grafana", "devops"]
-published: false
+published: true
 ---
 
 GitHub Actions の実行タイミングや実行時間を可視化できたら便利だと思い、GitHub Actions のログを Grafana Loki に送信するアクションを作ってみました。
