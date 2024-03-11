@@ -19,8 +19,8 @@ publication_name: "microcms"
 
 # 前提
 
-前提として AWS と Slack のアカウント作成とログインを行っているものとします。
-また、メール受信に使用できるドメインが必要となりますので、Route53 にて準備しておいてください。
+前提として AWS と Slack のアカウント作成とログインを行っており、Terraform がインストールされていることを想定しています。
+また、メール受信に使用するドメインが必要となりますので、Route53 にて準備しておいてください。
 
 これらの説明については割愛しますので、ご了承お願いします。
 
@@ -84,10 +84,10 @@ https://api.slack.com/apps/
 
 # Route53 にて MX レコードを設定
 
-次はメールを受信するために Route53 にて MX レコードを設定します。コンソール画面は使用せず、AWS CLI を使用して設定します。
+次はメールを受信するために Route53 にてドメインに MX レコードを設定します。
 
-下記コマンドを実行してください。<Route53 のホストゾーン ID>と<ドメイン名>には適切な値を入力してください。
-また、ここではサブドメインを _mail_ として設定していますが、こちらも適宜変更してください。
+今回はコンソール画面を使用せず、AWS CLI を使用して設定します。<Route53 のホストゾーン ID>と<ドメイン名>には適切な値に変更して、下記コマンドを実行してください。
+※サブドメインを _mail_ として設定していますが、こちらも適宜変更してください。
 
 ```bash
 aws route53 change-resource-record-sets --hosted-zone-id <Route53のホストゾーンID> --change-batch '{
@@ -109,11 +109,51 @@ aws route53 change-resource-record-sets --hosted-zone-id <Route53のホストゾ
 }'
 ```
 
-作成した「_mail_.<ドメイン名>」をメール受信用のドメインとして使用します。
+レコードの値には、[公式ドキュメント](https://docs.aws.amazon.com/ses/latest/dg/regions.html)に記載されている東京リージョンの値を使用しています。
 
-# Node.js のコード
+作成できたら、「_mail_.<ドメイン名>」をメール受信用のドメインとして使用するので、控えておいてください。
 
-続いて Lambda 関数のコードを Node.js で作成します。
+# S3 バケットと SES のルールセットを作成(Terraform)
+
+次は Terraform で S3 バケットと SES のルールセットを作成します。
+
+## S3
+
+コードをアップロードする S3 バケットと、メールを受信するための S3 バケットを作成します。
+
+```hcl:s3.tf
+resource "aws_s3_bucket" "grafana_notification_s3" {
+  count  = local.enable_stg
+  bucket = local.grafana_notification_s3_bucket
+}
+
+resource "aws_s3_object" "grafana_notification_s3" {
+  count  = local.enable_stg
+  bucket = local.grafana_notification_s3_bucket
+  key    = local.grafana_notification_s3_key
+  source = data.archive_file.grafana_notification.output_path
+  etag   = filemd5(data.archive_file.grafana_notification.output_path)
+
+  depends_on = [aws_s3_bucket.grafana_notification_s3[0]]
+}
+```
+
+## SES
+
+メールを受信するための SES のルールセットを作成します。
+
+```hcl:ses.tf
+
+```
+
+# Lambda 関数を作成(Node.js + Terraform)
+
+続いて Lambda 関数を Node.js のコードと Terraform で作成します。
+
+## Node.js
+
+SES を経由して受信したメールのデータを解析し、画像を Slack にアップロードします。
+また、メール本文から Slack のチャンネル ID を抽出するようにすることで、動的に送信するチャンネルを変更できるようにします。
 
 ```js:index.js
 const AWS = require("aws-sdk");
@@ -197,13 +237,7 @@ async function uploadImageToSlack(
 }
 ```
 
-# Terraform のコード
-
-Terraform で Lambda 関数と IAM ロール、S3 バケットを作成します。
-
-## Lambda
-
-メインの Lambda 関数です。
+## Terraform
 
 ```hcl:lambda.tf
 resource "aws_lambda_function" "grafana_notification" {
@@ -243,42 +277,7 @@ resource "aws_lambda_permission" "allow_bucket" {
   principal     = "s3.amazonaws.com"
   source_arn    = "${aws_s3_bucket.grafana_notification_s3.arn}"
 }
-```
 
-## S3
-
-コードをアップロードする S3 バケットと、メールを受信するための S3 バケットを作成します。
-
-```hcl:s3.tf
-resource "aws_s3_bucket" "grafana_notification_s3" {
-  count  = local.enable_stg
-  bucket = local.grafana_notification_s3_bucket
-}
-
-resource "aws_s3_object" "grafana_notification_s3" {
-  count  = local.enable_stg
-  bucket = local.grafana_notification_s3_bucket
-  key    = local.grafana_notification_s3_key
-  source = data.archive_file.grafana_notification.output_path
-  etag   = filemd5(data.archive_file.grafana_notification.output_path)
-
-  depends_on = [aws_s3_bucket.grafana_notification_s3[0]]
-}
-```
-
-## SES
-
-メールを受信するための SES のルールセットを作成します。
-
-```hcl:ses.tf
-
-```
-
-## IAM
-
-Lambda 関数の実行ロールとポリシーを作成します。
-
-```hcl:iam.tf
 resource "aws_iam_role_policy" "grafana_notification_policy" {
   count = local.enable_stg
   name  = "<適当なポリシー名を入力>"
@@ -327,9 +326,11 @@ resource "aws_iam_role" "grafana_notification_role" {
 }
 ```
 
+これで AWS での設定は完了です。
+
 # Grafana の設定
 
-Grafana からダッシュボードをメールで送信する設定をします。送信先には先ほど作成した SES のメールアドレスを使用しましょう。
+最後に Grafana からダッシュボードをメールで送信する設定をします。送信先には先ほど作成した SES のメールアドレスを使用しましょう。
 
 # おわりに
 
