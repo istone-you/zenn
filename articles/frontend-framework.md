@@ -44,7 +44,7 @@ https://ja.legacy.reactjs.org/
 https://nextjs.org/
 
 - ファイルベースのルーティング
-- レンダリングは SSR・ISR・SSG に対応
+- レンダリングは SSR・CSR・ISR・SSG に対応
 - ビルドは Webpack か Turbopack
 
 ## Remix
@@ -60,12 +60,12 @@ https://remix.run/
 https://www.gatsbyjs.com/
 
 - ファイルベースのルーティング
-- レンダリングは SSR・SSG に対応
+- レンダリングは SSR・SSG。DSG に対応
 - Next.js と比較してプラグインが豊富
 - BFF は基本的に GraphQL
 - ビルドは Webpack
 
-# Vue
+# Vue.js
 
 https://ja.vuejs.org/
 
@@ -109,14 +109,14 @@ https://www.solidjs.com/
 https://start.solidjs.com/getting-started/what-is-solidstart
 
 - SolidJS 版の Next.js といった感じ
-- ビルドは Vinxi(Nitro と Vite がベース)
+- ビルドは Vite (Vinxi)
 
 # Qwik
 
 https://qwik.dev/
 
 - 拡張子は `.jsx` または `.tsx`なので書き方は React に近い
-- 初期ロード時に必要なコードのみを送信し、その後必要に応じて追加のコードをロード
+- 初期ロード時に必要なコードのみを送信し、その後必要に応じて追加のコードをロードするため高速
 
 ## Qwik City
 
@@ -130,6 +130,9 @@ https://qwik.dev/docs/qwikcity/
 https://astro.build/
 
 - 拡張子は `.astro`
+- ファイルベースのルーティング
+- レンダリングは SSR・CSR・SSG に対応
 - React, Vue, Svelte, SolidJS などのコンポーネントを使用可能
 - MPA(Multi-page App)のみ
 - ビルドは Vite
+- ビルド時に JavaScript を排除するため高速
