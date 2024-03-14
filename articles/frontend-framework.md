@@ -55,7 +55,10 @@ https://remix.run/
 - ファイルベースのルーティング
 - レンダリングは SSR に対応
 - ビルドは Classic Remix Compiler か Vite
+- 独自の API を用意せず、Web 標準の API を採用
 - Next.js はデプロイ先を Vercel にしない場合だと制限があったりするので、その点での代替としても使える
+
+"**Get good at Remix, get good at the web.**"
 
 ## Gatsby.js
 
@@ -138,6 +141,112 @@ https://astro.build/
 - MPA(Multi-page App)のみ
 - ビルドは Vite
 - ビルド時に JavaScript を排除するため高速
+
+# ランキング
+
+## JavaScript Rising Stars(2023)
+
+まずは 2023 年の[JavaScript Rising Stars](https://risingstars.js.org/2023/en)で今回比較したフレームワークのランキングを見てみます。
+
+### Front-end Frameworks
+
+- 1 位: **React**
+- 3 位: **Svelte**
+- 5 位: **Vue.js**
+- 7 位: **SolidJS**
+- 8 位: **Qwik**
+
+### Back-end/Full-stack
+
+- 1 位: **Next.js**
+- 2 位: **Astro**
+- 6 位: **Nuxt.js**
+- 9 位: **Qwik**
+- 11 位: **Remix**
+- 12 位: **SvelteKit**
+
+### Static Sites
+
+- 1 位: **Next.js**
+- 2 位: **Astro**
+- 4 位: **Nuxt.js**
+
+このような結果でした。本記事では記載しておりませんが、**Front-end Frameworks**の 2 位にランクインしている htmx にも注目ですね。
+
+## State of JS(2022)
+
+次は、2022 年の[State of JS](https://2022.stateofjs.com/)を見てみます。(2023 年の結果は Comming Soon です。)
+
+### Awareness
+
+認知度
+
+- 1 位: **React**
+- 1 位: **Vue.js**
+- 4 位: **Svelt**
+- 7 位: **SolidJ**
+- 9 位: **Qwik**
+
+### Usage
+
+使用率
+
+- 1 位: **React**
+- 3 位: **Vue.js**
+- 4 位: **Svelte**
+- 7 位: **SolidJS**
+- 11 位: **Qwik**
+
+### Satisfaction
+
+満足度
+
+- 1 位: **Svelte**
+- 2 位: **Qwik**
+- 3 位: **SolidJS**
+- 4 位: **Vue.js**
+- 5 位: **React**
+
+### Retention
+
+継続利用率
+
+- 1 位: **SolidJS**
+- 2 位: **Svelte**
+- 3 位: **Qwik**
+- 4 位: **React**
+- 5 位: **Vue.js**
+
+### Positive
+
+「学習したい」「また使用したい」
+
+- 1 位: **React**
+- 2 位: **Svelte**
+- 3 位: **Vue.js**
+- 4 位: **SolidJS**
+- 5 位: **Qwik**
+
+### Negative
+
+「学習したくない」「もう使用したくない」
+
+- 7 位: **Vue.js**
+- 8 位: **SolidJS**
+- 9 位: **Qwik**
+- 10 位: **Svelte**
+- 11 位: **React**
+
+### Other Tools
+
+- 1 位: **Astro**
+- 2 位: **Remix**
+- 3 位: **Next.js**
+- 6 位: **Nuxt.js**
+- 9 位: **SvelteKit**
+
+認知では React と Vue のツートップですが、Svelte, SolidJS, Qwik が満足度や継続利用率で上位にランクインしているのが興味深いですね。
+また、**JavaScript Rising Stars**では Astro は Next.js に次ぐ 2 位でしたが、**State of JS**では Astro は 1 位となってますね。
 
 # まとめ
 
