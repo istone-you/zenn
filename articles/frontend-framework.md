@@ -18,7 +18,6 @@ Web サイトを作成する際に、どのフレームワークを採用する�
 - **React**
   - **Next.js**
   - **Remix**
-  - **Gatsby.js**
 - **Vue**
   - **Nuxt.js**
 - **Svelte**
@@ -32,7 +31,9 @@ Web サイトを作成する際に、どのフレームワークを採用する�
 今回は、フロントエンドにおいてメジャーになっている React と Next.js を基準にして、それ以外のフレームワークを比較してみます。
 また、あれこれ記載すると違いが分かりづらくなるので、簡単な比較に留めます。
 
-# React
+# フロントエンドのフレームワークの比較
+
+## React
 
 https://ja.legacy.reactjs.org/
 
@@ -40,37 +41,15 @@ https://ja.legacy.reactjs.org/
 - 仮想 DOM を使用する
 - 単方向データバインディング
 
-## Next.js
+ドキュメントの「[Start a New React Project](https://react.dev/learn/start-a-new-react-project)」には下記の記載があります。
 
-https://nextjs.org/
+> If you want to build a new app or a new website fully with React, we recommend picking one of the React-powered frameworks popular in the community.
 
-- ファイルベースのルーティング
-- レンダリングは SSR・CSR・ISR・SSG に対応
-- ビルドは Webpack か Turbopack
+"_React で新しいアプリケーションや新しいウェブサイトを完全に構築したい場合は、コミュニティで人気のある React ベースのフレームワークのいずれかを選ぶことをお勧めします。_"
 
-## Remix
+ここでは**Next.js**・**Remix**・**Gatsby**の 3 つが紹介されています。
 
-https://remix.run/
-
-- ファイルベースのルーティング
-- レンダリングは SSR に対応
-- ビルドは Classic Remix Compiler か Vite
-- 独自の API を用意せず、Web 標準の API を採用
-- Next.js はデプロイ先を Vercel にしない場合だと制限があったりするので、その点での代替としても使える
-
-"**Get good at Remix, get good at the web.**"
-
-## Gatsby.js
-
-https://www.gatsbyjs.com/
-
-- ファイルベースのルーティング
-- レンダリングは SSR・SSG・DSG に対応
-- BFF は基本的に GraphQL
-- ビルドは Webpack
-- Next.js と比較してプラグインが豊富
-
-# Vue.js
+## Vue.js
 
 https://ja.vuejs.org/
 
@@ -78,69 +57,147 @@ https://ja.vuejs.org/
 - 仮想 DOM を使用する
 - 双方向データバインディング
 
-## Nuxt.js
-
-https://nuxt.com/
-
-- Vue 版の Next.js といった感じ
-- ビルドは webpack か Vite
-
-# Svelte
+## Svelte
 
 https://svelte.jp/
 
-- 拡張子は `.svelte`
-- Vanilla JS に近い形でコンパイルされる
-- 仮想 DOM を使用しないので高速
+- 拡張子は `.svelte`で、記法は Vue.js に近い
+- コンパイル時に変更される可能性がある変数などをすべて Vanilla.js に落とし込み、仮想 DOM を使用しないため高速
+- 双方向データバインディング
+- 記述量が少ない
 
-## SvelteKit
+ドキュメントの「[Start a new project](https://svelte.dev/docs/introduction#start-a-new-project)」には下記の記載があります。
 
-https://kit.svelte.jp/
+> We recommend using **SvelteKit**, the official application framework from the Svelte team
 
-- Svelte 版の Next.js といった感じ
-- ビルドは Vite
+"_Svelte チームによるオフィシャルなアプリケーションフレームワークである **SvelteKit** をお使いいただくことをおすすめします_"
 
-# SolidJS
+## SolidJS
 
 https://www.solidjs.com/
 
-- 拡張子は `.jsx` または `.tsx`なので書き方は React に近い
-- Vanilla JS に近い形でコンパイルされる
-- 仮想 DOM を使用しないので高速
-- 思想としては Svelte に近いが、書き方が React に近いといった違いがある(Svelte と React のいいとこどりなイメージ)
+- 拡張子は `.jsx` または `.tsx`なので記法は React に近い
+- コンパイル時に変更される可能性がある変数などをすべて Vanilla.js に落とし込み、仮想 DOM を使用しないため高速
+- 単方向データバインディング
+- 思想としては Svelte に近いものの、速さでは SolidJS の方が、記述量では Svelte の方がそれぞれ優れている
 
-## SolidStart
-
-https://start.solidjs.com/getting-started/what-is-solidstart
-
-- SolidJS 版の Next.js といった感じ
-- ビルドは Vite (Vinxi)
-
-# Qwik
+## Qwik
 
 https://qwik.dev/
 
-- 拡張子は `.jsx` または `.tsx`なので書き方は React に近い
-- 初期ロード時に必要なコードのみを送信し、その後必要に応じて追加のコードをロードするため高速
+- 拡張子は `.jsx` または `.tsx`なので記法は React に近い
+- JavaScript の実行をできるだけ遅らせることで、初期ロード時が高速
+- 単方向データバインディング
 
-## Qwik City
+他のフレームワーク同様、メタフレームワーク(ここでは **Qwik City**)の使用が推奨されています。
+
+## 表での比較
+
+|                      | React      | Vue.js   | Svelte                       | SolidJS                      | Qwik                                  |
+| -------------------- | ---------- | -------- | ---------------------------- | ---------------------------- | ------------------------------------- |
+| 拡張子               | .jsx, .tsx | .vue     | .svelte                      | .jsx, .tsx                   | .jsx, .tsx                            |
+| ブラウザへの描画     | 仮想 DOM   | 仮想 DOM | コンパイル時に Vanilla.js 化 | コンパイル時に Vanilla.js 化 | JavaScript の実行をできるだけ遅らせる |
+| データバインディング | 単方向     | 双方向   | 双方向                       | 単方向                       | 単方向                                |
+
+# 上記をベースにしたメタフレームワークの比較
+
+## Next.js (React ベース)
+
+https://nextjs.org/
+
+- ファイルシステムベースのルーティング
+- 画像の最適化
+- レンダリングは SSR・CSR・ISR・SSG に対応
+- ビルドは Turbopack を使用
+
+## Remix (React ベース)
+
+https://remix.run/
+
+- ファイルシステムベースのルーティング
+- 画像の最適化
+- レンダリングは SSR に対応
+- ビルドは Classic Remix Compiler か Vite
+- Web 標準に基づいた API
+- Next.js はデプロイ先を Vercel にしない場合だと制限があったりするので、その点での代替としても使える
+
+"**Get good at Remix, get good at the web.**"
+
+## Gatsby (React ベース)
+
+https://www.gatsbyjs.com/
+
+- ファイルベースのルーティング
+- 画像の最適化
+- レンダリングは SSR・SSG・DSG に対応
+- ビルドは Webpack
+- BFF は基本的に GraphQL を使用する
+- Next.js と比較してプラグインが豊富
+
+## Nuxt.js (Vue.js ベース)
+
+https://nuxt.com/
+
+- ファイルシステムベースのルーティング
+- 画像の最適化
+- レンダリングは SSR・CSR・ISR・SSG に対応
+- ビルドは Vite を使用
+
+## SvelteKit (Svelte ベース)
+
+https://kit.svelte.jp/
+
+- ファイルシステムベースのルーティング
+- 画像の最適化
+- レンダリングは SSR・CSR・ISR・SSG に対応
+- ビルドは Vite を使用
+
+## SolidStart (SolidJS ベース)
+
+https://start.solidjs.com/getting-started/what-is-solidstart
+
+- ベータ版のため情報が少ない
+- MPA に対応
+- ファイルシステムベースのルーティング
+- レンダリングは SSR・CSR・SSG に対応
+- ビルドは Vite (Vinxi)
+
+## Qwik City (Qwik ベース)
 
 https://qwik.dev/docs/qwikcity/
 
-- Qwik 版の Next.js といった感じ
-- ビルドは Vite
+- ファイルシステムベースのルーティング
+- 画像の最適化
+- レンダリングは SSR・CSR・SSG に対応
+- ビルドは Vite を使用
 
-# Astro
+## Astro
 
 https://astro.build/
 
 - 拡張子は `.astro`
-- ファイルベースのルーティング
-- レンダリングは SSR・CSR・SSG に対応
+- ファイルシステムベースのルーティング
+- 画像の最適化
+- レンダリングは SSR・CSR・ISR・SSG に対応
 - React, Vue, Svelte, SolidJS などのコンポーネントを使用可能
-- MPA(Multi-page App)のみ
 - ビルドは Vite
-- ビルド時に JavaScript を排除するため高速
+- コンテンツ重視のため、 SPA ではなく MPA
+- ビルド時にできるだけ JavaScript を排除して高速化
+
+## 表での比較
+
+すでに紹介したフレームワークの特徴も内包しています。
+
+|                                      | Next.js         | Remix                     | Gatsby.js               | Nuxt.js         | SvelteKit                                    | SolidStart  | Qwik City                                  | Astro                               |
+| ------------------------------------ | --------------- | ------------------------- | ----------------------- | --------------- | -------------------------------------------- | ----------- | ------------------------------------------ | ----------------------------------- |
+| 拡張子                               | .jsx,.tsx       | .jsx,.tsx                 | .vue                    | .svelte         | .jsx,.tsx                                    | .jsx,.tsx   | .astro                                     |
+| コンポーネント                       | React           | React                     | React                   | Vue.js          | Svelte                                       | SolidJS     | Qwik                                       | React,Vue,Svelte,SolidJS,etc.       |
+| ページング                           | SPA,MPA         | SPA,MPA                   | SPA,MPA                 | SPA,MPA         | SPA,MPA                                      |
+| ファイルシステムベースのルーティング | ○               | ○                         | ○                       | ○               | ○                                            | ○           | ○                                          | ○                                   |
+| 画像の最適化                         | ○               | ○                         | ○                       | ○               | ○                                            |             | ○                                          | ○                                   |
+| レンダリング                         | SSR,CSR,ISR,SSG | SSR                       | SSR,CSR,SSG             | SSR,CSR,ISR,SSG | SSR,CSR,ISR,SSG                              | SSR,CSR,SSG | SSR,CSR,SSG                                | SSR,CSR,ISR,SSG                     |
+| ビルド                               | Turbopack       | ClassicRemixCompiler,Vite | Webpack                 | Vite            | Vite                                         | Vite(Vinxi) | Vite                                       | Vite                                |
+| その他特徴                           |                 | Web 標準に基づいた API    | BFF には GraphQL を使用 |                 | Svelte を使用する際は SvelteKit の利用が推奨 |             | Qwik を使用する際は Qwik City の利用が推奨 | JavaScript 出来るだけを排除した MPA |
 
 # ランキング
 
@@ -178,6 +235,8 @@ https://astro.build/
 次は、2022 年の[State of JS](https://2022.stateofjs.com/)を見てみます。(2023 年の結果は Comming Soon です。)
 
 ### Awareness
+
+<!-- textlint-disable spellcheck-tech-word ja-technical-writing/ja-no-mixed-period-->
 
 認知度
 
@@ -244,6 +303,8 @@ https://astro.build/
 - 3 位: **Next.js**
 - 6 位: **Nuxt.js**
 - 9 位: **SvelteKit**
+
+<!-- textlint-enable -->
 
 認知では React と Vue のツートップですが、Svelte, SolidJS, Qwik が満足度や継続利用率で上位にランクインしているのが興味深いですね。
 また、**JavaScript Rising Stars**では Astro は Next.js に次ぐ 2 位でしたが、**State of JS**では Astro は 1 位となってますね。
