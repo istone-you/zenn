@@ -4,7 +4,7 @@ emoji: "📌"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["aws", "nodejs", "terraform", "grafana", "slack"]
 published: false
-publication_name: "microcms"
+# publication_name: "microcms"
 ---
 
 # はじめに

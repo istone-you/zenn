@@ -4,7 +4,7 @@ emoji: "🚀"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["devops", "開発環境"]
 published: false
-publication_name: "microcms"
+# publication_name: "microcms"
 ---
 
 # はじめに
