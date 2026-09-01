@@ -2,7 +2,7 @@
 title: "microCMS の開発環境 〜Dev Container と mise で環境を揃える〜"
 emoji: "🛠️"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["devcontainer", "mise", "monorepo", "terraform", "opentofu"]
+topics: ["devcontainer", "mise", "monorepo", "terraform", "開発環境"]
 published: false
 publication_name: "microcms"
 ---
@@ -21,6 +21,8 @@ microCMS では、バックエンド（Go / Node.js）もフロントエンド�
 Go・Node.js・Python・OpenTofu・AWS CLI……と必要なツールが多いので、各自のマシンにインストールしていく方式は早々に無理が来ます。
 OS の違いやツールのバージョン差で「自分の環境だけ動かない」が発生し、その調査に時間を取られてしまいます。
 
+## イメージを配って全員同じ環境にする
+
 そこで microCMS では **Dev Container** を使い、開発環境をコンテナイメージとして配布するようにしています。
 リポジトリを clone してコンテナを開けば、それだけで全員が同じ環境になります。
 
@@ -32,17 +34,13 @@ OS の違いやツールのバージョン差で「自分の環境だけ動か�
 これは、コーディングエージェントにコマンドを実行させるうえでも効いてきます。
 影響範囲がコンテナ内に閉じるので、権限を絞りすぎずに作業を任せられます。
 
-# エディタは Cursor がメイン、Neovim も使える
+## Cloud Agent でもほぼ同じイメージを使う
 
-エディタは **Cursor** を使っている人がほとんどです。
-Dev Container に対応しているので、リポジトリを開くだけでコンテナに接続して開発を始められます。
+手元での開発とは別に、Cursor の Cloud Agent も活用しています。
+クラウド上のマシンでエージェントに作業させられるので、手元のマシンを占有せずに済みます。
 
-一方で、ターミナルで完結させたい人向けに **Neovim** も用意しています。
-Neovim 本体も mise で管理し、設定一式をリポジトリに入れているので、コンテナに入ればすぐ使えます。
-herdr や lazygit といった周辺ツールも同じように揃えてあります。
-
-どちらを選んでも、使うツールもコマンドも同じです。
-lint もテストもデプロイも mise のタスクに寄せてあるので、「Cursor ならこの手順、Neovim ならこの手順」という分岐が発生しません。
+こちらでも、ほぼ同じイメージを使っています。
+ベースイメージこそ別に用意していますが、同じ `mise.toml` からツールを入れるので、手元とクラウドでツールが揃います。
 
 # mise でツール・タスク・環境変数を管理する
 
@@ -56,11 +54,13 @@ microCMS では、言語ランタイムも Linter も IaC ツールも、すべ�
 
 ```toml:mise.toml
 [tools]
-"go"                          = "x.y.z"
-"node"                        = "x.y.z"
-"aqua:opentofu/opentofu"      = "x.y.z"
-"aqua:golangci/golangci-lint" = "x.y.z"
-"npm:@biomejs/biome"          = "x.y.z"
+"go"            = "x.y.z"
+"node"          = "x.y.z"
+"typescript"    = "x.y.z"
+"opentofu"      = "x.y.z"
+"terragrunt"    = "x.y.z"
+"golangci-lint" = "x.y.z"
+"biome"         = "x.y.z"
 ```
 
 そして重要なのが、GitHub Actions でも同じ `mise.toml` からツールを入れていることです。
@@ -69,13 +69,13 @@ CI 用にバージョンを別管理する必要がなく、ローカルと CI �
 「ローカルでは lint が通るのに CI では落ちる」といったバージョン差による問題も起きません。
 ツールを追加するときも、`mise.toml` に 1 行足せばローカルにも CI にも入るので、更新漏れが起きません。
 
-もちろん、コーディングエージェントや MCP サーバーも同じように固定しています。
+もちろん、コーディングエージェントも同じように固定しています。
 
 ```toml:mise.toml
 [tools]
-"npm:@anthropic-ai/claude-code" = "x.y.z"
-"npm:@openai/codex"             = "x.y.z"
-"cursor-cli"                    = "x.y.z"
+"claude-code" = "x.y.z"
+"codex"       = "x.y.z"
+"cursor-cli"  = "x.y.z"
 ```
 
 :::message
@@ -91,6 +91,7 @@ mise はタスクランナーとしても使えます。
 microCMS では、開発サーバーの起動・デプロイ・テスト・環境の作成や削除まで、ひととおりのコマンドをタスクとして定義しています。
 
 モノレポだと「web はこのコマンド、backend はこのコマンド」と入口が散らばりがちですが、すべて `mise run` から実行できるようにしているので、覚えるのは `mise run` だけで済みます。
+※ `mise run` は毎回打つには長いので、`task` というエイリアスからも実行できるようにしています。
 
 さらに、タスク名を覚えなくても済むように **fzf** を組み合わせています。
 
@@ -119,6 +120,16 @@ mise は `.env` を読み込めるので、環境変数もここに寄せてい�
 
 `.env` に置いているのは、どの環境を使うかといった設定が中心です。
 一方でシークレットはローカルに置かない方針にしていて、必要なものはタスクの実行時に取得し、使い終わったら破棄しています。
+
+# エディタは Cursor がメイン、Neovim も使える
+
+エディタは **Cursor** を使っている人がほとんどです。
+Dev Container に対応しているので、リポジトリを開くだけでコンテナに接続して開発を始められます。
+
+一方で、ターミナルで完結させたい人向けに **Neovim** も用意しています。
+Neovim 本体も mise で管理し、設定一式をリポジトリに入れているので、コンテナに入ればすぐ使えます。
+
+ターミナルマルチプレクサの **herdr** や、Git 操作の **lazygit** といったツール、各言語の LSP なども mise で入れてあるので、ターミナルでの作業も効率よく進められます。
 
 # コミット前のチェックは lefthook で
 
@@ -184,7 +195,7 @@ minimum_release_age = "8d"
 microCMS では [**Renovate**](https://docs.renovatebot.com/) を使い、依存関係の更新 PR を自動で作るようにしています。
 npm のパッケージだけでなく、`mise.toml` のツールや GitHub Actions のバージョンまで対象にしているので、更新漏れが起きません。
 
-更新の量が多くなりがちなので、Node.js 系・Go 系といった単位でグルーピングして、PR が細かく分かれすぎないようにしています。
+更新の量が多くなりがちなので、グルーピングして PR が細かく分かれすぎないようにしています。
 
 # インフラはすべて OpenTofu と Terragrunt でコード化する
 
